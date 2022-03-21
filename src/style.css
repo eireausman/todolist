@@ -1,0 +1,102 @@
+.nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.logoContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.navTitle {
+    display: flex;
+}
+
+.navAddNewItem {
+    display: flex;
+    cursor: pointer;
+}
+
+.mainContainerDiv {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+
+.leftMenu {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    height: 100vh;
+    /* background-color: rgb(252, 252, 120); */
+}
+
+.burgerFlyOut {
+    width: 0px;
+    height:0px;
+    transform: translate(-100vw, 0vh);   
+    transition: 1s;
+}
+
+.leftMenuProjectItemList {
+    list-style-type: none;
+    padding-left: 0px;
+    width: 100%;
+    transition: 1s;
+}
+
+.leftMenuProjectItem {
+    display: flex;
+    width: 200px;
+    align-items: center;
+    border: 1px solid rgb(59, 194, 228);
+    background-color: yellow;
+    margin-top: 1px;
+    cursor: pointer;
+}
+
+.ListImgEle {
+    width:20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.leftMenuProjectItemText {
+    font-size: 1rem;
+}
+
+.leftMenuItemShowAsSelected {
+    background-color: black;
+    color: white;
+
+}
+
+.mainPageListContent {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+
+
+@media (max-width: 450px) {
+
+    .leftMenu {
+        width:25px;
+    }
+    .leftMenuProjectItemList {
+        transform: translate(-100vw, 0vh);
+        transition: 1s;
+    }
+
+    .burgerFlyOut {
+        display: flex;
+        width: 20px;
+        height: 20px;
+        transform: translate(0vw, 0vh);   
+        transition: 0.3s;
+    }
+  
+  }
