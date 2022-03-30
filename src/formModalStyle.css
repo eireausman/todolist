@@ -1,0 +1,40 @@
+
+.modalFormContainer {
+    display: flex;
+    justify-content: center;    
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color:rgba(36, 36, 36, 0.9);
+    padding-top: 15%;
+    padding-bottom: 20px;
+    
+    visibility: hidden;
+    opacity:0;
+    pointer-events: none;
+    transition: 0.4s;
+}
+.formContainerVisible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.formModalListItemEdit {
+display: flex;
+flex-direction: column;
+border: 5px solid #979595;
+background: rgb(222, 223, 223);
+border-radius: 15px;
+color: black;
+min-width: 250px;
+max-height: 40vh;
+overflow: auto;
+transition: border 2s;
+}
+
+.formModalListItemEditSaved {
+    border: 5px solid #30db05;
+}

@@ -1,77 +1,125 @@
  
-import { id } from 'date-fns/locale';
-import storage from './localStorage.js';
+import { differenceInCalendarDays, formatDistanceToNow, intervalToDuration, parseISO } from 'date-fns';
+import ListItemObj from './ListItemObj.js';
 
 export default function dataEvents() {
-    
-    const addListItemToDB = (listItem) => {
-        
-        console.log(`ID: ${listItem.ID} and title: ${listItem.title}`);
-        localStorage.setItem(listItem.ID, JSON.stringify(listItem));
-        
-        
+    const listItemObject = ListItemObj();
 
-        
+    const addListItemToDB = (listItem) => {
+        localStorage.setItem(listItem.ID, JSON.stringify(listItem));
     }   
 
+    const deleteThisObjectFromDB = (listItem) => {
+        localStorage.removeItem(listItem.ID);
+    }
+
+    const addStateSelected = (listItem) => {
+        listItem.selected = true;
+        addListItemToDB(listItem);
+    }
+    const removeStateSelected = (listItem) => {
+        listItem.selected = false;
+        addListItemToDB(listItem);
+    }
+    
     
     const getListItemDetails = (requestType, itemID) => {
         let storageItemsArray = [];
-        for (let i = 0; i <= localStorage.length; i++) {
-            if ( localStorage.getItem(i) != null ) {
-                storageItemsArray.push(JSON.parse(localStorage.getItem(i)))
+        const storageKeys = Object.keys(localStorage);
+         for (let item in storageKeys ) {
+            const itemToAdd = JSON.parse(localStorage.getItem(storageKeys[item]));
+            if ( itemToAdd != null ) {
+                storageItemsArray.push(itemToAdd);
             }
-            // let listItemToDisplay = JSON.parse(Object.values(storedListItems).at(i));
         }
-        
 
-        if ( requestType == "getAll" ) {
-            return storageItemsArray;
-        } else if ( requestType == "get1Item" && itemID > 0 ) {
-            let get1Item = storageItemsArray.filter(
-                function(storageItemsArray){return storageItemsArray.ID == itemID}
-            );
-            if ( get1Item.length > 1 ) {
-                return false;
-            } else {
-                return get1Item[0];
-            }
-           
-        } else if ( requestType == "getListItemChildren") {
-            let childList = storageItemsArray.filter(
+
+        if ( requestType == "isParent" ) {
+            const parentItems = storageItemsArray.filter(
+                function(storageItemsArray){
+                    return storageItemsArray.parentList == "parent";
+                });
+                return parentItems;
+        } else if ( requestType == "get1Item" && itemID > -1 ) {
+            const get1Item = storageItemsArray.find(storageItemsArray => storageItemsArray.ID == itemID);
+                return get1Item;
+        } else if ( requestType == "getListItemChildren" ) {
+            const childList = storageItemsArray.filter(
                 function(storageItemsArray){return storageItemsArray.parentList == itemID}
             );
+            const childListSorted = childList.sort(function compareFn(a, b){
+                let sortValue = 0;
+                const today = new Date();
+                let daysA = differenceInCalendarDays(parseISO(a.dueDate), today);
+                let daysB = differenceInCalendarDays(parseISO(b.dueDate), today);
+
+
+                if (isNaN(daysA)) {
+                    sortValue += -100;
+                }
+                if (daysA > daysB) {
+                    sortValue += -1;
+                }
+                if (daysA <  daysB) {
+                    sortValue += 1;
+                }
+                return sortValue;
+                
+            }); 
             return childList;
+        } else if ( requestType == "uncommitted") {
+            const uncommitted = storageItemsArray.filter(
+                function(storageItemsArray){return storageItemsArray.committed == false}
+            );
+            return uncommitted;
         }
-        
     }
 
+    
 
-
-    const createListObjectFromStorage = (storageID) => {
-    // will be used to recreate object to work with after storage retrieval so that JS functions are available for object.
-        const thisOne = JSON.parse(Object.values(localStorage).at(storageID));
-        console.log(thisOne);
+    const createListObjectFromStorage = (storedItem) => {
+        const thisItem = listItemObject.newListItem(storedItem.ID, storedItem.title, storedItem.dueDate, 
+            storedItem.importance, storedItem.pinned, storedItem.parentList, storedItem.selected, storedItem.committed);
+        return thisItem;
     }
 
     const findNextListID = () => {    
         const idArray = Object.keys(localStorage);
-        let highestID = 1;
+        let nextID = 0;
         if (idArray.length > 0) {
-            highestID = idArray.reduce(function(a, b) {
+            nextID = idArray.reduce(function(a, b) {
                 return Math.max(a, b);
             }, -Infinity) + 1;
-        } else {
-            // leaving this hear although already set.  It just helps understand the logic when coming back to it at a later date.
-            highestID = 1;
         }
-        console.log("HighestID=" + highestID);
-        return highestID;
+        return nextID;
     }
 
+    const daysUntilDue = (listItem) => {
+        const dueDate = parseISO(listItem.dueDate);
+        let days = {};
+        if (listItem.dueDate == "" ) {
+            days.daysUntilDue = '0';
+            days.daysUntilDueWords = `Set a due date...`;
+        }
+        if (listItem.dueDate != "" ) {
+            const difference = differenceInCalendarDays(dueDate, new Date())
+                if ( difference < 0 ) {
+                    days.daysUntilDue = '-1';
+                    days.daysUntilDueWords = `${formatDistanceToNow(dueDate, { addSuffix: true })}`;
+                    
+                } else {
+                    days.daysUntilDue = difference;
+                    days.daysUntilDueWords = `${formatDistanceToNow(dueDate, { addSuffix: true })}`;
+                }
+        }
+        return days;
+         
+    }
+
+       
     
+
     
-    
-    return { findNextListID, addListItemToDB, getListItemDetails, createListObjectFromStorage };
+    return { findNextListID, addListItemToDB, getListItemDetails, createListObjectFromStorage, addStateSelected, removeStateSelected, daysUntilDue, deleteThisObjectFromDB };
     
     }

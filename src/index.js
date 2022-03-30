@@ -1,4 +1,5 @@
 import './style.css';
+import './formModalStyle.css';
 // import intialSetUp from './initialSetUp.js';
 
 import DomEvents from './DOMevents.js';

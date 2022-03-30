@@ -1,38 +1,52 @@
-import { lastDayOfWeekWithOptions } from "date-fns/fp";
+
 
 import dataEvents from "./dataEvents.js";
+import DomEvents from "./DOMevents.js";
 
  
 export default function ListItemObj() {
 
     
 
-    const newListItem = (listItemTitle) => {
+    const newListItem = (listItemID, listItemTitle, dueDate, importance, pinned, parentList, selected, committed) => {
         const dataEventsObj = dataEvents();
-        const listItemID = dataEventsObj.findNextListID();
+        const DOMEventsObj = DomEvents();
+        // let newListItemID = listItemID;
+        if ( isNaN(listItemID) ) {
+            listItemID = dataEventsObj.findNextListID();
+        }
         const listItem = {
             ID: listItemID,
             title: listItemTitle,
-            dueDate: null,
-            importance: "Normal",
-            pinned: false,
-            parentList: 1,
-            selected: true,
-            addItemtoDB(listItem) {
+            dueDate: dueDate,
+            importance: importance,
+            pinned: pinned,
+            parentList: parentList,
+            selected: selected,
+            committed, committed,
+            addItemtoDB() {
                 dataEventsObj.addListItemToDB(listItem);
+            },
+            selectedStateAdd() {
+                dataEventsObj.addStateSelected(listItem);
+            },
+            selectedStateRemove() {
+                dataEventsObj.removeStateSelected(listItem);
+            },
+            displayChildList() {
+                DOMEventsObj.displayListItemChildren(listItem);
+            },
+            daysLeftToDue() {
+                const days = dataEventsObj.daysUntilDue(listItem);
+                return days;
+            },
+            deleteFromDB() {
+                dataEventsObj.deleteThisObjectFromDB(listItem);
             }
-            }
+        }
     return listItem;
     }
     
-
-
-
-
-
-
-
-
 
 return { newListItem };
 
