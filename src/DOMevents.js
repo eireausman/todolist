@@ -2,7 +2,19 @@ import ListItemObj from './ListItemObj.js';
 import dataEvents from "./dataEvents.js";
 import formModal from "./formModal.js";
 
-import ListImg from './z_img/list-48.png';
+import ListImg from './z_img/listKart.png';
+import MenuImg from './z_img/menu.png';
+import FaceSweatImg from './z_img/overdueFaceSweat.png';
+import NewLambImg from './z_img/newLamb.png';
+import AWeekAwayImg from './z_img/1weekCalendar.png';
+import OverAWeekAwayImg from './z_img/over1WeekTimeMachine.png';
+import NoDueDateImg from './z_img/noDueDateThinking.png';
+import CompletedImg from './z_img/completeLanded.png';
+
+import PencilImg from './z_img/pencil.png';
+import TrashImg from './z_img/trash.png';
+import CheckBoxImg from './z_img/checkbox.png';
+import CheckBoxUncheckedImg from './z_img/uncheckedbox.png';
 
 
 export default function DomEvents() {  
@@ -26,24 +38,22 @@ const initialSetUp = () => {
     const leftMenuNav = document.createElement("nav");
     leftMenuNav.classList.add("leftMenu");
     mainContainerDiv.appendChild(leftMenuNav);
-
-    const navAddNewItem = document.createElement("button");
-    navAddNewItem.textContent = "Add New ++";
-    navAddNewItem.classList.add("navAddNewItem");
-    leftMenuNav.appendChild(navAddNewItem);
     
     const burgerFlyOutImgEle = new Image();
     burgerFlyOutImgEle.classList.add("burgerFlyOut");
     burgerFlyOutImgEle.alt = "Show Menu";
-    burgerFlyOutImgEle.src = ListImg;
+    burgerFlyOutImgEle.src = MenuImg;
     leftMenuNav.appendChild(burgerFlyOutImgEle);
     
+    const navAddNewItem = document.createElement("button");
+    navAddNewItem.textContent = "New List ++";
+    navAddNewItem.classList.add("navAddNewItem");
+    leftMenuNav.appendChild(navAddNewItem);
+
     const leftMenuProjectItemList = document.createElement("nav");
     leftMenuProjectItemList.classList.add("leftMenuProjectItemList");
     leftMenuNav.appendChild(leftMenuProjectItemList);
-
-    
-    
+   
     const mainPageListContainer = document.createElement("div");
     mainPageListContainer.classList.add("mainPageListContainer");
     mainContainerDiv.appendChild(mainPageListContainer);
@@ -52,16 +62,12 @@ const initialSetUp = () => {
     mainPageListContentNavBar.classList.add("mainPageListContentNavBar");
     mainPageListContainer.appendChild(mainPageListContentNavBar);
 
-    const updateHasSavedMessage = document.createElement("div");
-    updateHasSavedMessage.classList.add("updateHasSavedMessage");
-    updateHasSavedMessage.textContent = "Saved";
-    mainPageListContentNavBar.appendChild(updateHasSavedMessage);
-
     const mainPageListContent = document.createElement("div");
     mainPageListContent.classList.add("mainPageListContent");
     mainPageListContainer.appendChild(mainPageListContent);
+    
+    addTimeBasedBreakPoints();
 
-    // check here to populate list with initial values
     const LeftMenuListItems = dataEventsObj.getListItemDetails("isParent", null);
     for (let i = 0; i < LeftMenuListItems.length; i++) {
         const thisItem = dataEventsObj.createListObjectFromStorage(LeftMenuListItems[i]);
@@ -75,14 +81,144 @@ const initialSetUp = () => {
     formModalObject.createForm();
 }
 
+const addTimeBasedBreakPoints = () => {
+
+    const mainPageListContent = document.querySelector(`.mainPageListContent`);
+
+    const mainPageListContentNewItem = document.createElement("div");
+    mainPageListContentNewItem.classList.add("contentBreakPoint");
+    mainPageListContentNewItem.classList.add("mainPageListContentNewItem");
+    mainPageListContent.appendChild(mainPageListContentNewItem);
+
+    const mainPageListContentNewItemHeadingContainer = document.createElement(`div`);
+    mainPageListContentNewItemHeadingContainer.classList.add(`breakPointHeading`);
+    mainPageListContentNewItem.appendChild(mainPageListContentNewItemHeadingContainer);
+
+    const mainPageListContentNewItemImg = new Image();
+    mainPageListContentNewItemImg.classList.add(`contentBreakPointImg`);
+    mainPageListContentNewItemImg.alt = "New";
+    mainPageListContentNewItemImg.src = NewLambImg;
+    mainPageListContentNewItemHeadingContainer.appendChild(mainPageListContentNewItemImg);
+    
+    const mainPageListContentNewItemHeadingText = document.createElement(`h2`);
+    mainPageListContentNewItemHeadingText.textContent = "New";
+    mainPageListContentNewItemHeadingText.classList.add(`breakPointHeadingText`);
+    mainPageListContentNewItemHeadingContainer.appendChild(mainPageListContentNewItemHeadingText);
+
+    const mainPageListContentOverdue = document.createElement("div");
+    mainPageListContentOverdue.classList.add("contentBreakPoint");
+    mainPageListContentOverdue.classList.add("mainPageListContentOverdue");
+    mainPageListContent.appendChild(mainPageListContentOverdue);
+
+    const mainPageListContentOverdueItemHeadingContainer = document.createElement(`div`);
+    mainPageListContentOverdueItemHeadingContainer.classList.add(`breakPointHeading`);
+    mainPageListContentOverdue.appendChild(mainPageListContentOverdueItemHeadingContainer);
+
+    const mainPageListContentOverdueImg = new Image();
+    mainPageListContentOverdueImg.classList.add(`contentBreakPointImg`);
+    mainPageListContentOverdueImg.alt = "Overdue";
+    mainPageListContentOverdueImg.src = FaceSweatImg;
+    mainPageListContentOverdueItemHeadingContainer.appendChild(mainPageListContentOverdueImg);
+  
+    const mainPageListContentOverdueHeading = document.createElement(`h2`);
+    mainPageListContentOverdueHeading.textContent = "Overdue";
+    mainPageListContentOverdueHeading.classList.add(`breakPointHeading`);
+    mainPageListContentOverdueItemHeadingContainer.appendChild(mainPageListContentOverdueHeading);
+
+    const mainPageListContentNextWeek = document.createElement("div");
+    mainPageListContentNextWeek.classList.add("contentBreakPoint");
+    mainPageListContentNextWeek.classList.add("mainPageListContentNextWeek");
+    mainPageListContent.appendChild(mainPageListContentNextWeek);
+
+    const mainPageListContentNextWeekHeadingContainer = document.createElement(`div`);
+    mainPageListContentNextWeekHeadingContainer.classList.add(`breakPointHeading`);
+    mainPageListContentNextWeek.appendChild(mainPageListContentNextWeekHeadingContainer);
+
+    const mainPageListContentNextWeekImg = new Image();
+    mainPageListContentNextWeekImg.classList.add(`contentBreakPointImg`);
+    mainPageListContentNextWeekImg.alt = "Due this week";
+    mainPageListContentNextWeekImg.src = AWeekAwayImg;
+    mainPageListContentNextWeekHeadingContainer.appendChild(mainPageListContentNextWeekImg);
+
+    const mainPageListContentNextWeekHeading = document.createElement(`h2`);
+    mainPageListContentNextWeekHeading.textContent = "In the next week";
+    mainPageListContentNextWeekHeading.classList.add(`breakPointHeading`);
+    mainPageListContentNextWeekHeadingContainer.appendChild(mainPageListContentNextWeekHeading);
+
+    
+    const mainPageListContentAfterNextWeek = document.createElement("div");
+    mainPageListContentAfterNextWeek.classList.add("contentBreakPoint");
+    mainPageListContentAfterNextWeek.classList.add("mainPageListContentAfterNextWeek");
+    mainPageListContent.appendChild(mainPageListContentAfterNextWeek);
+
+    const mainPageListContentAfterNextWeekHeadingContainer = document.createElement(`div`);
+    mainPageListContentAfterNextWeekHeadingContainer.classList.add(`breakPointHeading`);
+    mainPageListContentAfterNextWeek.appendChild(mainPageListContentAfterNextWeekHeadingContainer);
+
+    const mainPageListContentAfterNextWeekImg = new Image();
+    mainPageListContentAfterNextWeekImg.classList.add(`contentBreakPointImg`);
+    mainPageListContentAfterNextWeekImg.alt = "Due over a week away";
+    mainPageListContentAfterNextWeekImg.src = OverAWeekAwayImg;
+    mainPageListContentAfterNextWeekHeadingContainer.appendChild(mainPageListContentAfterNextWeekImg);
+
+    const mainPageListContentAfterNextWeekHeading = document.createElement(`h2`);
+    mainPageListContentAfterNextWeekHeading.textContent = "More than a week away";
+    mainPageListContentAfterNextWeekHeading.classList.add(`breakPointHeading`);
+    mainPageListContentAfterNextWeekHeadingContainer.appendChild(mainPageListContentAfterNextWeekHeading);
+
+    const mainPageListContentNoDateSet = document.createElement("div");
+    mainPageListContentNoDateSet.classList.add("contentBreakPoint");
+    mainPageListContentNoDateSet.classList.add("mainPageListContentNoDateSet");
+    mainPageListContent.appendChild(mainPageListContentNoDateSet);
+
+    const mainPageListContentNoDateSetHeadingContainer = document.createElement(`div`);
+    mainPageListContentNoDateSetHeadingContainer.classList.add(`breakPointHeading`);
+    mainPageListContentNoDateSet.appendChild(mainPageListContentNoDateSetHeadingContainer);
+
+    const mainPageListContentNoDateSetImg = new Image();
+    mainPageListContentNoDateSetImg.classList.add(`contentBreakPointImg`);
+    mainPageListContentNoDateSetImg.alt = "Due over a week away";
+    mainPageListContentNoDateSetImg.src = NoDueDateImg;
+    mainPageListContentNoDateSetHeadingContainer.appendChild(mainPageListContentNoDateSetImg);
+
+    const mainPageListContentNoDateSetHeading = document.createElement(`h2`);
+    mainPageListContentNoDateSetHeading.textContent = "No due date";
+    mainPageListContentNoDateSetHeading.classList.add(`breakPointHeading`);
+    mainPageListContentNoDateSetHeadingContainer.appendChild(mainPageListContentNoDateSetHeading);
+
+    const mainPageListContentComplete = document.createElement("div");
+    mainPageListContentComplete.classList.add("contentBreakPoint");
+    mainPageListContentComplete.classList.add("mainPageListContentComplete");
+    mainPageListContent.appendChild(mainPageListContentComplete);
+
+
+
+
+    const mainPageListContentCompleteHeadingContainer = document.createElement(`div`);
+    mainPageListContentCompleteHeadingContainer.classList.add(`breakPointHeading`);
+    mainPageListContentComplete.appendChild(mainPageListContentCompleteHeadingContainer);
+
+    const mainPageListContentCompleteImg = new Image();
+    mainPageListContentCompleteImg.classList.add(`contentBreakPointImg`);
+    mainPageListContentCompleteImg.alt = "Due over a week away";
+    mainPageListContentCompleteImg.src = CompletedImg;
+    mainPageListContentCompleteHeadingContainer.appendChild(mainPageListContentCompleteImg);
+
+    const mainPageListContentCompleteHeading = document.createElement(`h2`);
+    mainPageListContentCompleteHeading.textContent = "Completed";
+    mainPageListContentCompleteHeading.classList.add(`breakPointHeading`);
+    mainPageListContentCompleteHeadingContainer.appendChild(mainPageListContentCompleteHeading);
+}
+
 const displayListItemChildren = (listItem) => {
     const listMenuChildren = dataEventsObj.getListItemDetails("getListItemChildren", listItem.ID);
     const mainPageListContent = document.querySelector(".mainPageListContent");
-    // remove the current content
+    // remove the current content before populating
     while (mainPageListContent.firstChild) {
         mainPageListContent.removeChild(mainPageListContent.firstChild);
     }
-
+    
+    addTimeBasedBreakPoints();
 
     const previousHeading = document.querySelector(".listTitle");
     if ( previousHeading != null ) {
@@ -126,24 +262,62 @@ const createEmptyListItem = (parentID) => {
     false, 
     parentID, 
     false,
+    false,
     false);
-
-    console.log(additionalListItem);
 
     additionalListItem.addItemtoDB();
     const newEmptyItemForm = createMainPageListingForm(additionalListItem);
-    newEmptyItemForm.querySelector('textarea').focus();
-    console.log(newEmptyItemForm.closest('.mainPageListItemCard'));
-    // markMainPageListingCardAsSelected(newEmptyItemForm.closest('.mainPageListItemCard'));
+    newEmptyItemForm.querySelector('input').focus();
 
     }
 
+const showBreakPointClass = (e) => {
+    if (!e.classList.contains(`contentBreakPointShow`)) {
+        e.classList.add(`contentBreakPointShow`);
+    }
+}
+
+const refreshBreakPointHeading = (e) => {
+    // After a card is created, it is appended to the breakpoint section as the first child.  
+    // Therefore,  after creation, we need to move the header back to the top of the section.
+      const moveThisHeader = e.querySelector(`.breakPointHeading`);
+      e.insertBefore(moveThisHeader, e.firstChild);
+}
+
 const createMainPageListingForm = (listItem) => {
-    const mainPageListContent = document.querySelector(".mainPageListContent");
+
+    const dueDate = listItem.daysLeftToDue();
+    let appendToThis = document.querySelector(".mainPageListContent");
     
+    if ( listItem.completed == true ) {
+        appendToThis = document.querySelector(`.mainPageListContentComplete`);
+        showBreakPointClass(appendToThis);
+    } else if ( listItem.committed == false ) {
+        appendToThis = document.querySelector(`.mainPageListContentNewItem`);
+        showBreakPointClass(appendToThis);
+    } else if ( dueDate.daysUntilDue < 0 ) {
+        appendToThis = document.querySelector(`.mainPageListContentOverdue`);
+        showBreakPointClass(appendToThis);
+    } else if ( dueDate.daysUntilDue > 0 && dueDate.daysUntilDue <= 7 ) {
+        appendToThis = document.querySelector(`.mainPageListContentNextWeek`);
+        showBreakPointClass(appendToThis);
+    } else if ( dueDate.daysUntilDue > 7) {
+        appendToThis = document.querySelector(`.mainPageListContentAfterNextWeek`);
+        showBreakPointClass(appendToThis);
+    } else if ( dueDate.daysUntilDue == 0) {
+        appendToThis = document.querySelector(`.mainPageListContentNoDateSet`);
+        showBreakPointClass(appendToThis);
+    }
+   
     const mainPageListItemCard = document.createElement("div");
     mainPageListItemCard.classList.add("mainPageListItemCard");
-    mainPageListContent.insertBefore(mainPageListItemCard, mainPageListContent.firstChild)
+    appendToThis.insertBefore(mainPageListItemCard, appendToThis.firstChild)
+
+    refreshBreakPointHeading(appendToThis);
+
+    const mainPageListItemContentLeft = document.createElement("div");
+    mainPageListItemContentLeft.classList.add("mainPageListItemContentLeft");
+    mainPageListItemCard.appendChild(mainPageListItemContentLeft);
 
     let listItemForm = document.createElement("form");
     listItemForm.classList.add("mainPageListItemForm");
@@ -152,59 +326,77 @@ const createMainPageListingForm = (listItem) => {
     listItemForm.setAttribute("method", "post");
     listItemForm.setAttribute("action", "#");
     
-    mainPageListItemCard.appendChild(listItemForm);
+    mainPageListItemContentLeft.appendChild(listItemForm);
     
     
     listItemForm.addEventListener('submit', (e) => {
         e.preventDefault();
         });
 
-    let inputCheckbox = document.createElement("input");
-    inputCheckbox.setAttribute("type", "checkbox");
-    inputCheckbox.classList.add("listFormComponent");
-    inputCheckbox.classList.add("listFormMarkComplete");
-    listItemForm.appendChild(inputCheckbox);
-    inputCheckbox.addEventListener("click", function (e) {
-        console.log(e.target);
-    });
-
-    let inputTitle = document.createElement("textarea");
+ 
+    let inputTitle = document.createElement("input");
     inputTitle.setAttribute("type", "text");
     inputTitle.setAttribute("name", "List Item Title");
     inputTitle.classList.add("listFormComponent");
     inputTitle.classList.add("listFormTitleText");
-    // inputTitle.setAttribute("value", listItem.title);
-    inputTitle.textContent = " (" + listItem.ID + ")" + listItem.title;
+
+     if ( listItem.title == "" ) {
+        inputTitle.placeholder = listItem.title;
+    } else {
+        inputTitle.value = listItem.title;
+    }
+    
     listItemForm.appendChild(inputTitle);
      
-    let formDisplayDueDate = document.createElement("p");
-        const dueDate = listItem.daysLeftToDue();
-        formDisplayDueDate.textContent = `${dueDate.daysUntilDueWords}`;
-    
-
+    let formDisplayDueDate = document.createElement("p");    
+    formDisplayDueDate.textContent = `${dueDate.daysUntilDueWords}`;
     formDisplayDueDate.classList.add("listFormComponent");
     formDisplayDueDate.classList.add("formDisplayDueDate");
-    mainPageListItemCard.appendChild(formDisplayDueDate);
-
-    let formDisplayImportance = document.createElement("p");
-    formDisplayImportance.textContent = listItem.importance;
-    formDisplayImportance.classList.add("listFormComponent");
-    formDisplayImportance.classList.add("formDisplayImportance");
-    mainPageListItemCard.appendChild(formDisplayImportance);
-
-    let formDisplayPinned = document.createElement("p");
-    formDisplayPinned.textContent = listItem.pinned;
-    formDisplayPinned.classList.add("listFormComponent");
-    formDisplayPinned.classList.add("formDisplayPinned");
-    mainPageListItemCard.appendChild(formDisplayPinned);   
+    mainPageListItemContentLeft.appendChild(formDisplayDueDate);
 
 
-    let formDeleteThisItem = document.createElement("p");
-    formDeleteThisItem.textContent = listItem.pinned;
-    formDeleteThisItem.textContent = "| Delete This |";
-    formDeleteThisItem.classList.add("listFormComponent");
-    formDeleteThisItem.classList.add("formDisplayDeleteItem");
-    mainPageListItemCard.appendChild(formDeleteThisItem);   
+    const mainPageListItemContentRight = document.createElement("div");
+    mainPageListItemContentRight.classList.add("mainPageListItemContentRight");
+    mainPageListItemCard.appendChild(mainPageListItemContentRight);
+
+    const checkBoxImgEle = new Image();
+    if ( listItem.completed == true ) {
+        checkBoxImgEle.src = CheckBoxImg;
+    } else {
+        checkBoxImgEle.src = CheckBoxUncheckedImg;
+    }
+    checkBoxImgEle.classList.add(`checkBoxImgEle`);
+    checkBoxImgEle.alt = "Checkbox: Mark this entry as complete";
+    mainPageListItemContentRight.appendChild(checkBoxImgEle);
+    checkBoxImgEle.addEventListener("click", function (e) {
+        const completedlistItemCard = e.target.closest(`.mainPageListItemCard`);
+        const completedBreakPoint = document.querySelector(`.mainPageListContentComplete`);
+        listItem.completed = !listItem.completed;
+        listItem.addItemtoDB();
+        const parentStoredItem = dataEventsObj.getListItemDetails("get1Item", listItem.parentList);
+        const parentObject = dataEventsObj.createListObjectFromStorage(parentStoredItem);
+        parentObject.displayChildList();
+        
+    });
+
+
+    const pencilImgEle = new Image();
+    pencilImgEle.src = PencilImg;
+    pencilImgEle.classList.add(`pencilImgEle`);
+    pencilImgEle.alt = "Pencil: Edit this entry";
+    mainPageListItemContentRight.appendChild(pencilImgEle);
+
+    const trashImgEle = new Image();
+    trashImgEle.src = TrashImg;
+    trashImgEle.alt = "Bin: Delete this entry";
+    trashImgEle.classList.add(`trashImgEle`);
+    mainPageListItemContentRight.appendChild(trashImgEle);
+
+    const updateHasSavedMessage = document.createElement("p");
+    updateHasSavedMessage.classList.add("updateHasSavedMessage");
+    updateHasSavedMessage.textContent = "Saved";
+    updateHasSavedMessage.setAttribute("data-savedtag", listItem.ID);
+    mainPageListItemContentRight.appendChild(updateHasSavedMessage);
 
     inputTitle.addEventListener("input", function (e) {
        
@@ -212,13 +404,14 @@ const createMainPageListingForm = (listItem) => {
         listItem.title = e.target.value;
         listItem.committed = true;
         listItem.addItemtoDB(listItem);
-        // not validated as complete but no two-way comms here.  It should really have a test:
-        const itemSavedMessage = document.querySelector(".updateHasSavedMessage");
+        // not validated as complete but no two-way comms here.  It should really have a test to confirm this has been done correctly:
+        const itemSavedMessage = document.querySelector(`p[data-savedtag="${listItem.ID}"]`);
         itemSavedMessage.classList.add("updateHasSavedMessageShow");
         itemSavedMessage.addEventListener('transitionend', function (e) {
             itemSavedMessage.classList.remove("updateHasSavedMessageShow");
         });
     });
+
     mainPageListItemCard.addEventListener("click", function (e) { 
         if ( e.target.classList.contains("formDisplayDeleteItem")) {
             return;
@@ -226,12 +419,13 @@ const createMainPageListingForm = (listItem) => {
         markMainPageListingCardAsSelected(e.target.closest('.mainPageListItemCard'));
     });
 
-    formDeleteThisItem.addEventListener("click", function (e) {    
-        const deleteParent = e.target.closest(`.mainPageListItemCard`);
-        if (confirm(`are you sure you want to delete`) == true ) {
+    trashImgEle.addEventListener("click", function (e) {    
+        const cardElement = e.target.closest(`.mainPageListItemCard`);
+        console.log(listItem.title);
+        if (confirm(`Delete: \n\nTitle: ${listItem.title}`) == true ) {
             
             
-            deleteParent.remove();
+            cardElement.remove();
             listItem.deleteFromDB();
         }    
     });
@@ -245,17 +439,14 @@ const createMainPageListingForm = (listItem) => {
     });
 
     formDisplayDueDate.addEventListener("click", function (e) {
-        console.log(listItem);
-        // formModalObject.createForm(listItem, `date`, formDisplayDueDate.closest('.mainPageListItemCard'));
         formModalObject.updateInputValues(listItem);
         formModalObject.showForm(listItem);
       });
-    formDisplayImportance.addEventListener("click", function (e) {
-      console.log(e.target)
-    });         
-    formDisplayPinned.addEventListener("click", function (e) {
-        formModalObject.createForm(listItem);
-      });
+    pencilImgEle.addEventListener("click", function (e) {
+    formModalObject.updateInputValues(listItem);
+    formModalObject.showForm(listItem);
+    });
+ 
 
       if ( listItem.selected == true ) {
         markMainPageListingCardAsSelected(mainPageListItemCard);
@@ -272,7 +463,6 @@ const markMainPageListingCardAsSelected = (mainPageListItemCard) => {
         e.classList.remove("mainPageListItemCardActive")
         // find the storage ID and remove the Selected state
         const dataItemID = e.querySelector(".mainPageListItemForm").dataset.itemid;
-        console.log(dataItemID);
          const storageItem = dataEventsObj.getListItemDetails("get1Item", dataItemID);
          const thisItem = dataEventsObj.createListObjectFromStorage(storageItem);
          thisItem.selected = false;
@@ -281,17 +471,11 @@ const markMainPageListingCardAsSelected = (mainPageListItemCard) => {
   // set the row to active state so it's clear which is being edited
         const dataItemID = mainPageListItemCard.querySelector(".mainPageListItemForm").dataset.itemid;
         const storageItem = dataEventsObj.getListItemDetails("get1Item", dataItemID);
-        console.log(storageItem);
         const thisItem = dataEventsObj.createListObjectFromStorage(storageItem);
         thisItem.selected = true;
         thisItem.addItemtoDB();
       mainPageListItemCard.classList.add("mainPageListItemCardActive");
 }
-
-
-
-
-
 
 const addListItemToMenu = (thisItem) => {
     const leftMenuProjectItemList = document.querySelector(".leftMenuProjectItemList");
@@ -301,7 +485,6 @@ const addListItemToMenu = (thisItem) => {
     leftMenuProjectItem.setAttribute('data-listitemid', thisItem.ID);
     
     leftMenuProjectItemList.insertBefore(leftMenuProjectItem, leftMenuProjectItemList.firstChild)
-    // leftMenuProjectItemList.appendChild(leftMenuProjectItem);
 
     const ListImgEle = new Image();
     ListImgEle.classList.add("ListImgEle");
@@ -354,11 +537,7 @@ const leftMenuEventListeners = (clickedElement) => {
         }
 
         deleteUncommittedEntries();
-    // const deleteUncommittedEntries = dataEventsObj.getListItemDetails("uncommitted");
-    //     for (let i = 0; i < deleteUncommittedEntries.length; i++ ) {
-    //         const UncommittedEntry = dataEventsObj.createListObjectFromStorage(deleteUncommittedEntries[i]);
-    //         UncommittedEntry.deleteFromDB();
-    //     }
+
 }
 
 const deleteUncommittedEntries = () => {
@@ -370,21 +549,25 @@ const deleteUncommittedEntries = () => {
 }
 
 const toggleLeftMenuShow = () => {
+    const burgerMenuImg = document.querySelector(`.burgerFlyOut`);
+    burgerMenuImg.classList.toggle(`burgerFlyOutHide`);
+    const navAddNewItem = document.querySelector(`.navAddNewItem`);
+    navAddNewItem.classList.toggle(`navAddNewItemLeftMenuOut`);
+    
     const leftMenu = document.querySelector(".leftMenu");
     leftMenu.classList.toggle("leftMenuFlyOut");
     const leftMenuProjectItemList = document.querySelector(`.leftMenuProjectItemList`);
     leftMenuProjectItemList.classList.toggle(`leftMenuProjectItemListShow`);
+    
 }
 
 const initialEventListeners = () => {
 
-
     const leftMenu = document.querySelector(".leftMenu");
-    console.log(leftMenu);
     leftMenu.addEventListener("mouseenter", toggleLeftMenuShow); 
     leftMenu.addEventListener("mouseleave", toggleLeftMenuShow); 
     
-    // left mene click actions
+    // left menu click actions
     const allLeftMenuItems = document.querySelectorAll('.leftMenuProjectItem');
     allLeftMenuItems.forEach(e => e.addEventListener("click", function (e) {
         leftMenuEventListeners(e.target);
@@ -396,7 +579,8 @@ const initialEventListeners = () => {
         // remove all empty DB entries so the next availableID is correct
         deleteUncommittedEntries();
         const newTitle = prompt("what is the title?");
-        // REQUIRES VALIDATION && MODAL
+
+        if ( newTitle != null ) {
         const newListItem = listItemObject.newListItem(
             NaN, 
             newTitle, 
@@ -405,21 +589,19 @@ const initialEventListeners = () => {
             false, 
             'parent', 
             true, 
-            true);
+            true,
+            false);
             
         console.table(newListItem);
         newListItem.addItemtoDB(newListItem);
         const leftMenuProjectItem = addListItemToMenu(newListItem);
         showLeftMenuSelected(leftMenuProjectItem, newListItem, false);
         newListItem.displayChildList();
+        createEmptyListItem(newListItem.ID);
+        }
     });
 }
 
 
     return { initialSetUp, initialEventListeners, addListItemToMenu, displayListItemChildren };
 }
-
-
-// newGameGridCell.addEventListener('mouseenter', function(e) {
-//     e.target.classList.add('gameGridCellMouseAnim');
-// });

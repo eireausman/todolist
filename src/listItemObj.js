@@ -8,7 +8,7 @@ export default function ListItemObj() {
 
     
 
-    const newListItem = (listItemID, listItemTitle, dueDate, importance, pinned, parentList, selected, committed) => {
+    const newListItem = (listItemID, listItemTitle, dueDate, importance, pinned, parentList, selected, committed, completed) => {
         const dataEventsObj = dataEvents();
         const DOMEventsObj = DomEvents();
         // let newListItemID = listItemID;
@@ -24,6 +24,7 @@ export default function ListItemObj() {
             parentList: parentList,
             selected: selected,
             committed, committed,
+            completed, completed,
             addItemtoDB() {
                 dataEventsObj.addListItemToDB(listItem);
             },

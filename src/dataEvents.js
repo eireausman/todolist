@@ -79,7 +79,7 @@ export default function dataEvents() {
 
     const createListObjectFromStorage = (storedItem) => {
         const thisItem = listItemObject.newListItem(storedItem.ID, storedItem.title, storedItem.dueDate, 
-            storedItem.importance, storedItem.pinned, storedItem.parentList, storedItem.selected, storedItem.committed);
+            storedItem.importance, storedItem.pinned, storedItem.parentList, storedItem.selected, storedItem.committed, storedItem.completed);
         return thisItem;
     }
 
@@ -105,11 +105,11 @@ export default function dataEvents() {
             const difference = differenceInCalendarDays(dueDate, new Date())
                 if ( difference < 0 ) {
                     days.daysUntilDue = '-1';
-                    days.daysUntilDueWords = `${formatDistanceToNow(dueDate, { addSuffix: true })}`;
+                    days.daysUntilDueWords = `Due ${formatDistanceToNow(dueDate, { addSuffix: true })}`;
                     
                 } else {
                     days.daysUntilDue = difference;
-                    days.daysUntilDueWords = `${formatDistanceToNow(dueDate, { addSuffix: true })}`;
+                    days.daysUntilDueWords = `Due ${formatDistanceToNow(dueDate, { addSuffix: true })}`;
                 }
         }
         return days;

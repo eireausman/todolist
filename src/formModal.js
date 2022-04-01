@@ -35,13 +35,13 @@ export default function formModal() {
         inputTitleLabel.textContent = `Note (required)`;
         formModalForm.appendChild(inputTitleLabel);
 
-        const inputTitle = document.createElement("textarea");
+        const inputTitle = document.createElement("input");
         inputTitle.setAttribute("type", "text");
         inputTitle.required = true;
         inputTitle.classList.add("listFormTitle");
         inputTitle.setAttribute("id", "title");
         inputTitle.setAttribute("name", "title");
-        inputTitle.textContent = "n/a";
+        inputTitle.value = "n/a";
         formModalForm.appendChild(inputTitle);
         if ( originElement == `title` ) {
           inputTitle.focus();
@@ -65,7 +65,7 @@ export default function formModal() {
         formModalForm.appendChild(inputDueDate);
 
         const updateHasSavedMessage = document.createElement("div");
-        updateHasSavedMessage.classList.add("updateHasSavedMessage");
+        updateHasSavedMessage.classList.add("updateHasSavedMessageFormModal");
         updateHasSavedMessage.textContent = "Saved";
         formModalForm.appendChild(updateHasSavedMessage);
 
@@ -98,14 +98,14 @@ export default function formModal() {
           console.table(listItem);
           listItem.addItemtoDB(listItem);
           // not validated as complete but no two-way comms here:
-          updateHasSavedMessage.classList.add("updateHasSavedMessageShow");
+          updateHasSavedMessage.classList.add("updateHasSavedMessageFormModalShow");
           formModalForm.classList.add("formModalListItemEditSaved");
         });
 
         updateHasSavedMessage.addEventListener('transitionend', formModalSavedRemove);
           function formModalSavedRemove (e) {
               console.log(e.target.classList);
-              e.target.classList.remove("updateHasSavedMessageShow");
+              e.target.classList.remove("updateHasSavedMessageFormModalShow");
               formModalForm.classList.remove("formModalListItemEditSaved");
               // window.removeEventListener('transitionend', formModalSavedRemove)
         }
@@ -154,7 +154,7 @@ export default function formModal() {
       const inputTitle = document.querySelector(".listFormTitle");
       const inputDueDate = document.querySelector(".listFormDueDate");
       console.log(inputTitle);
-      inputTitle.textContent = listItem.title;
+      inputTitle.value = listItem.title;
       console.log(listItem.title);
       inputDueDate.value = listItem.dueDate;
       formModalForm.setAttribute("data-parentList", listItem.parentList);
