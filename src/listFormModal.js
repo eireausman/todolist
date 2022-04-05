@@ -100,28 +100,32 @@ export default function listformModal() {
         formModalDoneButton.addEventListener("click", (e) => {
             closeModalForm();
         });
-         
+    }
 
-        const closeModalForm = () => {
-          const DOMEventsObj = DOMevents();
-          // update the main page listing view to reflect any changes upon closure
-            const form = document.querySelector(`.listFormModalListItemEdit`)
-            const listItemID = form.dataset.itemid;
-            const storedListItem = dataEventsObj.getListItemDetails("get1Item", listItemID);
-            const listItem = dataEventsObj.createListObjectFromStorage(storedListItem);
+    const closeModalForm = () => {
+        const DOMEventsObj = DOMevents();
+        const formContainer = document.querySelector(`.listModalFormContainer`);
+        console.log(formContainer.classList);
+        if ( formContainer.classList.contains(`listFormContainerVisible`) ) {
+          console.log(formContainer.classList);
+                // update the main page listing view to reflect any changes upon closure
+        const form = document.querySelector(`.listFormModalListItemEdit`)
+        const listItemID = form.dataset.itemid;
+        console.log(listItemID);
+        const storedListItem = dataEventsObj.getListItemDetails("get1Item", listItemID);
+        const listItem = dataEventsObj.createListObjectFromStorage(storedListItem);
 
           if (listItem.committed == true ) {         
             const leftMenuProjectItem = DOMEventsObj.addListItemToMenu(listItem);
             DOMEventsObj.showLeftMenuSelected(leftMenuProjectItem, listItem, false);
             listItem.displayChildList();
           }
-         
           formContainer.classList.remove("listFormContainerVisible");
+      }
 
-                
-        
-        }
     }
+    
+   
 
 
     const updateInputValues = (listItem) => {
@@ -140,5 +144,5 @@ export default function listformModal() {
     }
     
 
-    return { createForm, updateInputValues, showForm }
+    return { createForm, updateInputValues, showForm, closeModalForm }
 }  

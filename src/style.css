@@ -273,13 +273,11 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    width:85vw;
     overflow: auto;
     padding: 10px;
 }
 
 .contentBreakPoint {
-    width: 80vw;
     transform: translate(-100vw, 0vh);   
     transition: 0.5s;
     height:0px;

@@ -8,7 +8,7 @@
     right: 0;
     bottom: 0;
     background-color:rgba(36, 36, 36, 0.9);   
-    transform: translate(0vw, -100vh);
+    transform: translate(-300vw, 0vh);
     pointer-events: none;
     transition: 0.4s;
 }

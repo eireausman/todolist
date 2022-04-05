@@ -565,11 +565,13 @@ const addListItemToMenu = (thisItem) => {
     
     const leftMenuItemTitle = document.createElement("p");
     leftMenuItemTitle.classList.add("leftMenuProjectItemText");
-    leftMenuItemTitle.textContent = thisItem.title + " (" + thisItem.ID + ")";
+    leftMenuItemTitle.textContent = thisItem.title;
     leftMenuItemTitle.setAttribute('data-listitemid', thisItem.ID);
     leftMenuProjectItem.appendChild(leftMenuItemTitle);
 
     leftMenuProjectItem.addEventListener("click", function (e) {
+        listFormModalObject.closeModalForm();
+        taskFormModalObject.closeModalForm(`external`)
         deleteUncommittedEntries();
         leftMenuEventListeners(e.target);
     });
@@ -609,6 +611,7 @@ const leftMenuEventListeners = (clickedElement) => {
             thisItem.displayChildList();
         }
         toggleLeftMenuShow();
+
 }
 
 const deleteUncommittedEntries = () => {
@@ -654,8 +657,8 @@ const initialEventListeners = () => {
     // left menu click actions
     const allLeftMenuItems = document.querySelectorAll('.leftMenuProjectItem');
     allLeftMenuItems.forEach(e => e.addEventListener("click", function (e) {
-       
-
+    
+        
         leftMenuEventListeners(e.target);
   
       }));
@@ -664,6 +667,7 @@ const initialEventListeners = () => {
     const navAddNewItem = document.querySelector(".navAddNewItem");
     navAddNewItem.addEventListener("click", function(e) {
         // remove all empty DB entries so the next availableID is correct
+        
         deleteUncommittedEntries();
      
         const newListItem = listItemObject.newListItem(

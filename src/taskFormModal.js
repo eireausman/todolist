@@ -115,20 +115,29 @@ export default function taskformModal() {
         formModalDoneButton.addEventListener("click", (e) => {
             closeModalForm()
         });
-         
 
-        const closeModalForm = () => {
-          // update the main page listing view to reflect any changes upon closure
-          const listItemID = document.querySelector(`.formModalListItemEdit`).dataset.itemid;
-          const storedListItem = dataEventsObj.getListItemDetails("get1Item", listItemID);
-          const listItem = dataEventsObj.createListObjectFromStorage(storedListItem);
-          const listItemParentObject = dataEventsObj.getListItemDetails("get1Item", listItem.parentList);
-          const parentObject = dataEventsObj.createListObjectFromStorage(listItemParentObject);
-          parentObject.displayChildList();
-          formContainer.classList.remove("formContainerVisible");
-        }
     }
 
+
+    const closeModalForm = (source) => {
+      // update the main page listing view to reflect any changes upon closure
+      const formContainer = document.querySelector(`.modalFormContainer`);
+      
+      if ( source != `external` ) {
+        updatePageUponClosure();
+      }
+      
+      formContainer.classList.remove("formContainerVisible");
+    }
+    
+    const updatePageUponClosure = () => {
+      const listItemID = document.querySelector(`.formModalListItemEdit`).dataset.itemid;
+      const storedListItem = dataEventsObj.getListItemDetails("get1Item", listItemID);
+      const listItem = dataEventsObj.createListObjectFromStorage(storedListItem);
+      const listItemParentObject = dataEventsObj.getListItemDetails("get1Item", listItem.parentList);
+      const parentObject = dataEventsObj.createListObjectFromStorage(listItemParentObject);
+      parentObject.displayChildList();
+    }
 
     const updateInputValues = (listItem) => {
       const formModalForm = document.querySelector(".formModalListItemEdit");
@@ -150,5 +159,5 @@ export default function taskformModal() {
     }
     
 
-    return { createForm, updateInputValues, showForm }
+    return { createForm, updateInputValues, showForm, closeModalForm }
 }  
