@@ -343,6 +343,7 @@ body {
     color: #b6acac;
     background-color: rgba(0, 0, 0, 0);
     border: 0;
+    cursor: pointer;
     text-align: left;
     opacity: 0;
     transform: 1.5s;
