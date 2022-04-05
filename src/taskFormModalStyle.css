@@ -7,32 +7,51 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color:rgba(36, 36, 36, 0.9);
-    padding-top: 15%;
-    padding-bottom: 20px;
-    
-    visibility: hidden;
-    opacity:0;
+    background-color:rgba(36, 36, 36, 0.9);   
+    transform: translate(0vw, -100vh);
     pointer-events: none;
     transition: 0.4s;
 }
 .formContainerVisible {
     visibility: visible;
-    opacity: 1;
+    transform: translate(0vw, 0vh);
     pointer-events: all;
 }
+
 
 .formModalListItemEdit {
 display: flex;
 flex-direction: column;
-border: 5px solid #979595;
-background: rgb(222, 223, 223);
-border-radius: 15px;
+position: fixed;
+top: 20%;
+border: 5px solid #ffffff;
+background: rgb(216, 215, 215);
+border-radius: 5px;
 color: black;
 min-width: 250px;
-max-height: 40vh;
-overflow: auto;
+height: 200px;
 transition: border 2s;
+}
+
+.formModalLabel {
+    display: flex;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin: 10px 10px 0px 10px;
+}
+
+.formModalInput {
+    display: flex;
+    margin: 3px 10px 0px 10px;
+}
+
+.formModalDoneButton {
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    width: 150px;   
 }
 
 .updateHasSavedMessageFormModal {
@@ -40,9 +59,9 @@ transition: border 2s;
     align-items: center;
     justify-content: center;
     align-self: center;
+    margin-top: 10px;
     background-color: rgb(22, 186, 30);
     color: rgb(249, 249, 249);
-    border: 1px solid white;
     border-radius: 5px;
     padding: 3px 3px 3px 3px;
     height:20px;

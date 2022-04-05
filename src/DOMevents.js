@@ -1,6 +1,7 @@
 import ListItemObj from './ListItemObj.js';
 import dataEvents from "./dataEvents.js";
-import formModal from "./formModal.js";
+import taskFormModal from "./taskFormModal.js";
+import listFormModal from "./listFormModal.js";
 
 import ListImg from './z_img/listKart.png';
 import MenuImg from './z_img/menu.png';
@@ -21,34 +22,36 @@ export default function DomEvents() {
 
     const dataEventsObj = dataEvents();
     const listItemObject = ListItemObj();
-    const formModalObject = formModal();
+    const taskFormModalObject = taskFormModal();
+    const listFormModalObject = listFormModal();
 
 const initialSetUp = () => {
+
     const contentDiv = document.createElement("div");
     contentDiv.classList.add("content")
     const theBody = document.querySelector("body");
-    theBody.appendChild(contentDiv);
-    
-    
+    theBody.appendChild(contentDiv);  
     
     const mainContainerDiv = document.createElement("section");
     mainContainerDiv.classList.add("mainContainerDiv");
     contentDiv.appendChild(mainContainerDiv);
 
-    const leftMenuNav = document.createElement("nav");
+    const leftMenuNav = document.createElement("div");
     leftMenuNav.classList.add("leftMenu");
     mainContainerDiv.appendChild(leftMenuNav);
     
+    const burgerFlyOutButton = document.createElement(`button`);
+    burgerFlyOutButton.classList.add("burgerFlyOutButton");
+    leftMenuNav.appendChild(burgerFlyOutButton);
+
     const burgerFlyOutImgEle = new Image();
     burgerFlyOutImgEle.classList.add("burgerFlyOut");
     burgerFlyOutImgEle.alt = "Show Menu";
     burgerFlyOutImgEle.src = MenuImg;
-    leftMenuNav.appendChild(burgerFlyOutImgEle);
-    
-    const navAddNewItem = document.createElement("button");
-    navAddNewItem.textContent = "New List ++";
-    navAddNewItem.classList.add("navAddNewItem");
-    leftMenuNav.appendChild(navAddNewItem);
+    burgerFlyOutButton.appendChild(burgerFlyOutImgEle);
+    burgerFlyOutButton.addEventListener(`click`, (e) => {
+        toggleLeftMenuShow(`flyOut`);
+    });
 
     const leftMenuProjectItemList = document.createElement("nav");
     leftMenuProjectItemList.classList.add("leftMenuProjectItemList");
@@ -58,16 +61,26 @@ const initialSetUp = () => {
     mainPageListContainer.classList.add("mainPageListContainer");
     mainContainerDiv.appendChild(mainPageListContainer);
 
-    const mainPageListContentNavBar = document.createElement("div");
+    const mainPageListContentNavBar = document.createElement("nav");
     mainPageListContentNavBar.classList.add("mainPageListContentNavBar");
     mainPageListContainer.appendChild(mainPageListContentNavBar);
 
-    const mainPageListContent = document.createElement("div");
+    const mainPageListContent = document.createElement("section");
     mainPageListContent.classList.add("mainPageListContent");
     mainPageListContainer.appendChild(mainPageListContent);
     
     addTimeBasedBreakPoints();
 
+
+    const navAddNewItem = document.createElement("button");
+    navAddNewItem.textContent = "New List ++";
+    navAddNewItem.classList.add("navAddNewItem");
+    leftMenuProjectItemList.insertBefore(navAddNewItem, leftMenuProjectItemList.firstChild);
+    
+    if (localStorage.length == 0 ) {
+        addDefaultToDoList();
+    }
+    
     const LeftMenuListItems = dataEventsObj.getListItemDetails("isParent", null);
     for (let i = 0; i < LeftMenuListItems.length; i++) {
         const thisItem = dataEventsObj.createListObjectFromStorage(LeftMenuListItems[i]);
@@ -78,7 +91,31 @@ const initialSetUp = () => {
         }
     }
 
-    formModalObject.createForm();
+
+    taskFormModalObject.createForm();
+    listFormModalObject.createForm();
+
+}
+
+function addDefaultToDoList() {
+    const newListItem = listItemObject.newListItem(
+        NaN, 
+        "To Do List", 
+        "", 
+        1, 
+        false, 
+        'parent', 
+        true, 
+        true,
+        false);
+
+    newListItem.addItemtoDB();
+}
+
+const repositionNewListButton = (e) => {
+    const newListButton = document.querySelector(`.navAddNewItem`); 
+    const leftMenu = document.querySelector(`.leftMenuProjectItemList`);
+    leftMenu.insertBefore(newListButton, leftMenu.firstChild);
 }
 
 const addTimeBasedBreakPoints = () => {
@@ -233,12 +270,17 @@ const displayListItemChildren = (listItem) => {
     mainPageListContentNavBar.appendChild(pageTitle);
     
 
-    // if this is the selected menu, show the children and create an empty one as a new item:
+    // if this is the selected menu, show the children
     if (listItem.selected == true ) {
-        for (let item in listMenuChildren) {
-            const childListItemObject = dataEventsObj.createListObjectFromStorage(listMenuChildren[item]);
-            createMainPageListingForm(childListItemObject);
-    }
+        if (listMenuChildren.length > 0 ) {
+            for (let item in listMenuChildren) {
+                const childListItemObject = dataEventsObj.createListObjectFromStorage(listMenuChildren[item]);
+                createMainPageListingForm(childListItemObject);
+            }   
+        // if there are no children to display, create a new one ready for editing:
+        } else {
+                createEmptyListItem(listItem.ID);
+        }
     const previousButton = document.querySelector(".buttonAddAnotherMainPageListItem");
     if ( previousButton != null ) {
         previousButton.remove();
@@ -246,7 +288,8 @@ const displayListItemChildren = (listItem) => {
     
     const buttonAddAnotherListItem = document.createElement("button");
     buttonAddAnotherListItem.classList.add("buttonAddAnotherMainPageListItem");
-    buttonAddAnotherListItem.textContent = "+ Add item";
+    buttonAddAnotherListItem.textContent = "+ Add Task";
+    buttonAddAnotherListItem.alt = "Add a task to this list";
     mainPageListContentNavBar.appendChild(buttonAddAnotherListItem);
     buttonAddAnotherListItem.addEventListener("click", function(e) {
         createEmptyListItem(listItem.ID);
@@ -266,6 +309,7 @@ const createEmptyListItem = (parentID) => {
     false);
 
     additionalListItem.addItemtoDB();
+
     const newEmptyItemForm = createMainPageListingForm(additionalListItem);
     newEmptyItemForm.querySelector('input').focus();
 
@@ -337,28 +381,41 @@ const createMainPageListingForm = (listItem) => {
     let inputTitle = document.createElement("input");
     inputTitle.setAttribute("type", "text");
     inputTitle.setAttribute("name", "List Item Title");
-    inputTitle.classList.add("listFormComponent");
     inputTitle.classList.add("listFormTitleText");
 
      if ( listItem.title == "" ) {
-        inputTitle.placeholder = listItem.title;
+        // inputTitle.placeholder = `${listItem.ID} - Task Title `;
+        inputTitle.placeholder = `Task Title `;
     } else {
-        inputTitle.value = listItem.title;
+        // inputTitle.value =  `${listItem.ID} - ` + listItem.title;
+        inputTitle.value =  listItem.title;
     }
     
     listItemForm.appendChild(inputTitle);
      
-    let formDisplayDueDate = document.createElement("p");    
+    let formDisplayDueDate = document.createElement("button");
     formDisplayDueDate.textContent = `${dueDate.daysUntilDueWords}`;
-    formDisplayDueDate.classList.add("listFormComponent");
     formDisplayDueDate.classList.add("formDisplayDueDate");
     mainPageListItemContentLeft.appendChild(formDisplayDueDate);
+    if ( listItem.title.length > 0 ) {
+        formDisplayDueDate.classList.add("formDisplayDueDateShow");
+        if ( listItem.completed == true ) {
+            formDisplayDueDate.classList.add("formDisplayDueDateCompleted");
+        }
+    }
+    
 
 
     const mainPageListItemContentRight = document.createElement("div");
     mainPageListItemContentRight.classList.add("mainPageListItemContentRight");
     mainPageListItemCard.appendChild(mainPageListItemContentRight);
 
+    const checkBoxImgButton = document.createElement(`button`);
+    checkBoxImgButton.classList.add(`checkBoxImgButton`);
+    checkBoxImgButton.classList.add("listFormActionButton");
+    mainPageListItemContentRight.appendChild(checkBoxImgButton);
+
+    
     const checkBoxImgEle = new Image();
     if ( listItem.completed == true ) {
         checkBoxImgEle.src = CheckBoxImg;
@@ -367,8 +424,8 @@ const createMainPageListingForm = (listItem) => {
     }
     checkBoxImgEle.classList.add(`checkBoxImgEle`);
     checkBoxImgEle.alt = "Checkbox: Mark this entry as complete";
-    mainPageListItemContentRight.appendChild(checkBoxImgEle);
-    checkBoxImgEle.addEventListener("click", function (e) {
+    checkBoxImgButton.appendChild(checkBoxImgEle);
+    checkBoxImgButton.addEventListener("click", function (e) {
         const completedlistItemCard = e.target.closest(`.mainPageListItemCard`);
         const completedBreakPoint = document.querySelector(`.mainPageListContentComplete`);
         listItem.completed = !listItem.completed;
@@ -379,18 +436,27 @@ const createMainPageListingForm = (listItem) => {
         
     });
 
+    const pencilImgButton = document.createElement(`button`);
+    pencilImgButton.classList.add(`pencilImgButton`);
+    pencilImgButton.classList.add("listFormActionButton");
+    mainPageListItemContentRight.appendChild(pencilImgButton);
 
     const pencilImgEle = new Image();
     pencilImgEle.src = PencilImg;
     pencilImgEle.classList.add(`pencilImgEle`);
     pencilImgEle.alt = "Pencil: Edit this entry";
-    mainPageListItemContentRight.appendChild(pencilImgEle);
+    pencilImgButton.appendChild(pencilImgEle);
+
+    const trashImgButton = document.createElement(`button`);
+    trashImgButton.classList.add(`trashImgButton`);
+    trashImgButton.classList.add("listFormActionButton");
+    mainPageListItemContentRight.appendChild(trashImgButton);
 
     const trashImgEle = new Image();
     trashImgEle.src = TrashImg;
     trashImgEle.alt = "Bin: Delete this entry";
     trashImgEle.classList.add(`trashImgEle`);
-    mainPageListItemContentRight.appendChild(trashImgEle);
+    trashImgButton.appendChild(trashImgEle);
 
     const updateHasSavedMessage = document.createElement("p");
     updateHasSavedMessage.classList.add("updateHasSavedMessage");
@@ -399,8 +465,9 @@ const createMainPageListingForm = (listItem) => {
     mainPageListItemContentRight.appendChild(updateHasSavedMessage);
 
     inputTitle.addEventListener("input", function (e) {
-       
+        
         // write any changes made directly to storage
+        if ( e.target.value.length > 0 ) {
         listItem.title = e.target.value;
         listItem.committed = true;
         listItem.addItemtoDB(listItem);
@@ -410,18 +477,21 @@ const createMainPageListingForm = (listItem) => {
         itemSavedMessage.addEventListener('transitionend', function (e) {
             itemSavedMessage.classList.remove("updateHasSavedMessageShow");
         });
+        const relatedDueDateText = e.target.closest(`.mainPageListItemContentLeft`).querySelector(`.formDisplayDueDate`);
+        relatedDueDateText.classList.add(`formDisplayDueDateShow`);
+        }
     });
 
     mainPageListItemCard.addEventListener("click", function (e) { 
-        if ( e.target.classList.contains("formDisplayDeleteItem")) {
+        // if the item that was clicked is being deleted, don't attempt to mark it as selected
+        if ( e.target.classList.contains("trashImgButton") || e.target.classList.contains("trashImgEle")) { 
             return;
         }
         markMainPageListingCardAsSelected(e.target.closest('.mainPageListItemCard'));
     });
 
-    trashImgEle.addEventListener("click", function (e) {    
+    trashImgButton.addEventListener("click", function (e) {    
         const cardElement = e.target.closest(`.mainPageListItemCard`);
-        console.log(listItem.title);
         if (confirm(`Delete: \n\nTitle: ${listItem.title}`) == true ) {
             
             
@@ -439,12 +509,12 @@ const createMainPageListingForm = (listItem) => {
     });
 
     formDisplayDueDate.addEventListener("click", function (e) {
-        formModalObject.updateInputValues(listItem);
-        formModalObject.showForm(listItem);
+        taskFormModalObject.updateInputValues(listItem);
+        taskFormModalObject.showForm(listItem);
       });
-    pencilImgEle.addEventListener("click", function (e) {
-    formModalObject.updateInputValues(listItem);
-    formModalObject.showForm(listItem);
+    pencilImgButton.addEventListener("click", function (e) {
+    taskFormModalObject.updateInputValues(listItem);
+    taskFormModalObject.showForm();
     });
  
 
@@ -484,7 +554,7 @@ const addListItemToMenu = (thisItem) => {
     leftMenuProjectItem.classList.add("leftMenuProjectItem");
     leftMenuProjectItem.setAttribute('data-listitemid', thisItem.ID);
     
-    leftMenuProjectItemList.insertBefore(leftMenuProjectItem, leftMenuProjectItemList.firstChild)
+    leftMenuProjectItemList.insertBefore(leftMenuProjectItem, leftMenuProjectItemList.firstChild);
 
     const ListImgEle = new Image();
     ListImgEle.classList.add("ListImgEle");
@@ -500,8 +570,10 @@ const addListItemToMenu = (thisItem) => {
     leftMenuProjectItem.appendChild(leftMenuItemTitle);
 
     leftMenuProjectItem.addEventListener("click", function (e) {
+        deleteUncommittedEntries();
         leftMenuEventListeners(e.target);
     });
+    repositionNewListButton();
     return leftMenuProjectItem;
 
 }
@@ -521,10 +593,11 @@ const showLeftMenuSelected = (leftMenuProjectItem, thisItem, initialLoad) => {
     if ( thisItem.selected == true ) {
         parentButton.classList.add("leftMenuItemShowAsSelected");
     }
+    
 }
 
 const leftMenuEventListeners = (clickedElement) => {
-        
+    
     const storageItem = dataEventsObj.getListItemDetails("get1Item", clickedElement.dataset.listitemid);
 
     const thisItem = dataEventsObj.createListObjectFromStorage(storageItem);
@@ -535,42 +608,56 @@ const leftMenuEventListeners = (clickedElement) => {
             showLeftMenuSelected(clickedElement, thisItem, false);
             thisItem.displayChildList();
         }
-
-        deleteUncommittedEntries();
-
+        toggleLeftMenuShow();
 }
 
 const deleteUncommittedEntries = () => {
         const deleteUncommittedEntries = dataEventsObj.getListItemDetails("uncommitted");
+    
     for (let i = 0; i < deleteUncommittedEntries.length; i++ ) {
         const UncommittedEntry = dataEventsObj.createListObjectFromStorage(deleteUncommittedEntries[i]);
         UncommittedEntry.deleteFromDB();
     }
 }
 
-const toggleLeftMenuShow = () => {
-    const burgerMenuImg = document.querySelector(`.burgerFlyOut`);
-    burgerMenuImg.classList.toggle(`burgerFlyOutHide`);
+const toggleLeftMenuShow = (action) => {
+    const burgerFlyOutButton = document.querySelector(`.burgerFlyOutButton`);
     const navAddNewItem = document.querySelector(`.navAddNewItem`);
-    navAddNewItem.classList.toggle(`navAddNewItemLeftMenuOut`);
-    
     const leftMenu = document.querySelector(".leftMenu");
-    leftMenu.classList.toggle("leftMenuFlyOut");
     const leftMenuProjectItemList = document.querySelector(`.leftMenuProjectItemList`);
-    leftMenuProjectItemList.classList.toggle(`leftMenuProjectItemListShow`);
+    if (action == `flyOut`) {
+        burgerFlyOutButton.classList.add(`burgerFlyOutButtonHide`);
+        navAddNewItem.classList.add(`navAddNewItemLeftMenuOut`);
+        leftMenu.classList.add("leftMenuFlyOut");
+        leftMenuProjectItemList.classList.add(`leftMenuProjectItemListShow`);
+    } else {
+        burgerFlyOutButton.classList.remove(`burgerFlyOutButtonHide`);
+        navAddNewItem.classList.remove(`navAddNewItemLeftMenuOut`);
+        leftMenu.classList.remove("leftMenuFlyOut");
+        leftMenuProjectItemList.classList.remove(`leftMenuProjectItemListShow`);
+    }
+    
+    
+   
     
 }
 
 const initialEventListeners = () => {
 
     const leftMenu = document.querySelector(".leftMenu");
-    leftMenu.addEventListener("mouseenter", toggleLeftMenuShow); 
-    leftMenu.addEventListener("mouseleave", toggleLeftMenuShow); 
-    
+    leftMenu.addEventListener("mouseenter", (e) => { 
+        toggleLeftMenuShow(`flyOut`);
+    }); 
+    leftMenu.addEventListener("mouseleave", (e) => { 
+        toggleLeftMenuShow(`flyIn`);
+    }); 
     // left menu click actions
     const allLeftMenuItems = document.querySelectorAll('.leftMenuProjectItem');
     allLeftMenuItems.forEach(e => e.addEventListener("click", function (e) {
+       
+
         leftMenuEventListeners(e.target);
+  
       }));
 
     // new list button actions
@@ -578,30 +665,26 @@ const initialEventListeners = () => {
     navAddNewItem.addEventListener("click", function(e) {
         // remove all empty DB entries so the next availableID is correct
         deleteUncommittedEntries();
-        const newTitle = prompt("what is the title?");
-
-        if ( newTitle != null ) {
+     
         const newListItem = listItemObject.newListItem(
             NaN, 
-            newTitle, 
+            "", 
             "", 
             1, 
             false, 
             'parent', 
             true, 
-            true,
+            false,
             false);
-            
-        console.table(newListItem);
-        newListItem.addItemtoDB(newListItem);
-        const leftMenuProjectItem = addListItemToMenu(newListItem);
-        showLeftMenuSelected(leftMenuProjectItem, newListItem, false);
-        newListItem.displayChildList();
-        createEmptyListItem(newListItem.ID);
-        }
+
+        newListItem.addItemtoDB();
+        listFormModalObject.updateInputValues(newListItem);
+        toggleLeftMenuShow();
+        listFormModalObject.showForm(newListItem);
+    
     });
 }
 
 
-    return { initialSetUp, initialEventListeners, addListItemToMenu, displayListItemChildren };
+    return { initialSetUp, initialEventListeners, addListItemToMenu, displayListItemChildren, showLeftMenuSelected, deleteUncommittedEntries};
 }

@@ -81,7 +81,7 @@ body {
     border-radius: 5px;
     padding: 3px 3px 3px 3px;
     height:20px;
-    width:100px;
+    width:140px;
     opacity: 0;
     z-index: -1;
     transition: 2s;
@@ -99,16 +99,20 @@ body {
     cursor: pointer;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    margin-top: 15px;
-    transition: 1s;
-    
+    height: 30px;
+    width:150px;
+    border-radius: 3px;
+    border: 1px solid rgb(86, 87, 86);
+    background-color: rgb(22, 186, 30);
+    color: rgb(255, 255, 255);
+    margin: 0px 0px 5px 5px;
+    transition: 0.5s;
+}
+.navAddNewItem:hover {
+    border-width: 2px;
 }
 
 .navAddNewItemLeftMenuOut {
-    background-color: #fffbfb;
-    color: #5c5959;
-    height: 50px;
     margin-top: 0px;
 }
 
@@ -136,7 +140,7 @@ body {
 
 .leftMenuFlyOut {
     width: 200px;
-    background-color: rgb(201, 200, 198);
+    background-color: rgb(230, 230, 230);
     overflow: auto;
 }
 .leftMenuFlyOut::-webkit-scrollbar {
@@ -153,14 +157,24 @@ body {
     background: rgb(225, 222, 222); 
 }
 
+.burgerFlyOutButton {
 
+    align-self: center;
+    border: 0px;
+    background-color:rgba(0, 0, 0, 0);
+    margin-top: 10px;
+    transition: 0.5s;
+    cursor: pointer;   
+}
 .burgerFlyOut {
+    display: flex;
     width:30px;
     align-self: center;
-    transition: 1s;
-    margin-top: 10px;
+    transition: 0.5s;
+    
+    cursor: pointer;
 }
-.burgerFlyOutHide {
+.burgerFlyOutButtonHide {
     width: 0px;
     height:0px;
     transform: translate(-100vw, 0vh);
@@ -183,9 +197,9 @@ body {
     align-items: center;
     text-align: left;
     width:180px;
-    border: 1px solid rgb(70, 72, 72);
-    background-color: rgb(255, 255, 255)45);
-    color: black;
+    border: 1px solid rgb(152, 152, 152);
+    background-color: rgb(43, 42, 42);
+    color: rgb(255, 255, 255);
     border-radius: 0px 6px 6px 0px;
     margin-top: 1px;
     padding: 5px;
@@ -194,7 +208,7 @@ body {
 }
 
 .leftMenuProjectItem:hover {
-    background-color: rgb(177, 176, 176);
+    background-color: rgb(22, 186, 30);
 }
 
 .ListImgEle {
@@ -208,7 +222,8 @@ body {
 }
 
 .leftMenuItemShowAsSelected {
-    background-color: rgb(176, 176, 176);
+    background-color: rgb(5, 121, 11);
+    border: 1px solid rgb(75, 75, 75);
     color: white;
 
 }
@@ -220,12 +235,39 @@ body {
 
 .mainPageListContentNavBar {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     padding-top:10px;
-    gap: 15px;
+    gap: 3px;
     font-weight: bold;
 }
+
+.listTitle {
+    color: white;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.buttonAddAnotherMainPageListItem {
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width:100px;
+    border-radius: 3px;
+    border: 1px solid rgb(191, 191, 191);
+    background-color: rgb(5, 121, 11);
+    color: white;
+    margin: 0px 0px 5px 5px;
+    transition: 0.5s;
+}
+.buttonAddAnotherMainPageListItem:hover {
+    border-color: white;
+    background-color: rgb(22, 186, 30);
+}
+
 .mainPageListContent {
     display: flex;
     flex-direction: column;
@@ -292,12 +334,26 @@ body {
 
 .mainPageListItemContentRight {
     display: flex;
+    margin-right: 10px;
 }
 
 .formDisplayDueDate {
     margin-left: 25px;
     font-size: 0.8rem;
     color: #b6acac;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0;
+    text-align: left;
+    opacity: 0;
+    transform: 1.5s;
+}
+
+.formDisplayDueDateShow {
+    opacity: 1;
+}
+
+.formDisplayDueDateCompleted {
+    text-decoration: line-through;
 }
 
 .formDisplayDueDate:hover {
@@ -331,35 +387,31 @@ body {
     border-left: 2px dotted white;
 }
 
-
+.listFormActionButton {
+    background-color: rgba(0, 0, 0, 0);
+    padding:0px;
+    border: 0;
+    cursor: pointer;
+}
+.listFormActionButton:hover {
+    animation: showActive 2s;
+    animation-iteration-count: infinite;
+}
 .checkBoxImgEle {
     width:25px;
     margin: 0px 2px 0px 4px;
-    cursor: pointer;
 }
-.checkBoxImgEle:hover {
-    animation: showActive 2s;
-    animation-iteration-count: infinite;
-}
+
 .pencilImgEle {
     width:25px;
     margin: 0px 2px 0px 4px;
-    cursor: pointer;
-}
-.pencilImgEle:hover {
-    animation: showActive 2s;
-    animation-iteration-count: infinite;
 }
 
 .trashImgEle {
     width:28px;
-    margin: 0px 10px 0px 4px;
-    cursor: pointer;
+    margin: 0px 4px 0px 4px;
 }
-.trashImgEle:hover {
-    animation: showActive 2s;
-    animation-iteration-count: infinite;
-}
+
 
 @keyframes showActive {
     0% { transform: rotate(0deg); }
@@ -370,7 +422,14 @@ body {
 
 
 
-@media (max-width: 450px) {
-
+@media (max-width: 610px) {
+    .mainPageListItemContentLeft {
+        width:100%;
+    }
+    
+    .mainPageListItemContentRight {
+        justify-content: flex-end;
+        width:100%;
+    }
   
   }

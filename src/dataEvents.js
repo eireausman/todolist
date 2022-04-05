@@ -36,8 +36,8 @@ export default function dataEvents() {
 
         if ( requestType == "isParent" ) {
             const parentItems = storageItemsArray.filter(
-                function(storageItemsArray){
-                    return storageItemsArray.parentList == "parent";
+                function(storageItemsArray) {
+                    return storageItemsArray.parentList == "parent" && storageItemsArray.committed == true;
                 });
                 return parentItems;
         } else if ( requestType == "get1Item" && itemID > -1 ) {
