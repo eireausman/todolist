@@ -106,13 +106,10 @@ export default function listformModal() {
     const closeModalForm = () => {
         const DOMEventsObj = DOMevents();
         const formContainer = document.querySelector(`.listModalFormContainer`);
-        console.log(formContainer.classList);
         if ( formContainer.classList.contains(`listFormContainerVisible`) ) {
-          console.log(formContainer.classList);
                 // update the main page listing view to reflect any changes upon closure
         const form = document.querySelector(`.listFormModalListItemEdit`)
         const listItemID = form.dataset.itemid;
-        console.log(listItemID);
         const storedListItem = dataEventsObj.getListItemDetails("get1Item", listItemID);
         const listItem = dataEventsObj.createListObjectFromStorage(storedListItem);
 
