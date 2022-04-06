@@ -231,7 +231,7 @@ body {
 }
 
 .mainPageListContainer {
-    margin-left: 100px;
+    margin: auto;
     height: 100vh;
 }
 
@@ -424,6 +424,11 @@ body {
 
 
 @media (max-width: 610px) {
+    .mainPageListContainer {
+        margin-left: 50px;
+        margin-left: 50px;
+    }
+   
     .mainPageListItemContentLeft {
         width:100%;
     }
