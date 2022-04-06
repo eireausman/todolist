@@ -43,6 +43,7 @@ export default function listformModal() {
         inputTitle.classList.add("listFormTitle");
         inputTitle.placeholder = "List Title";
         inputTitle.classList.add("listFormModalInput");
+        inputTitle.classList.add(`inputBoxMin16`);
         inputTitle.setAttribute("id", "listFormTitle");
         inputTitle.setAttribute("name", "title");
         formModalForm.appendChild(inputTitle);

@@ -40,6 +40,7 @@ export default function taskformModal() {
         inputTitle.required = true;
         inputTitle.classList.add("taskFormTitle");
         inputTitle.classList.add("formModalInput");
+        inputTitle.classList.add(`inputBoxMin16`);
         inputTitle.setAttribute("id", "taskFormTitle");
         inputTitle.setAttribute("name", "title");
         inputTitle.value = "n/a";
@@ -129,7 +130,7 @@ export default function taskformModal() {
       
       formContainer.classList.remove("formContainerVisible");
     }
-    
+
     const updatePageUponClosure = () => {
       const listItemID = document.querySelector(`.formModalListItemEdit`).dataset.itemid;
       const storedListItem = dataEventsObj.getListItemDetails("get1Item", listItemID);

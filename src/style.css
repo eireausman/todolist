@@ -51,6 +51,8 @@ table {
 /* ------- end of CSS Reset ------------------------------------------------------------------- */
 /* ------- end of CSS Reset ------------------------------------------------------------------- */
 
+
+
 body {
     background-color: rgb(41, 41, 41);
     color: white;
@@ -429,6 +431,10 @@ body {
     .mainPageListItemContentRight {
         justify-content: flex-end;
         width:100%;
+    }
+
+    .inputBoxMin16 {
+        font-size: max(1em, 16px);
     }
   
   }

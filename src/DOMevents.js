@@ -382,6 +382,7 @@ const createMainPageListingForm = (listItem) => {
     inputTitle.setAttribute("type", "text");
     inputTitle.setAttribute("name", "List Item Title");
     inputTitle.classList.add("listFormTitleText");
+    inputTitle.classList.add(`inputBoxMin16`);
 
      if ( listItem.title == "" ) {
         // inputTitle.placeholder = `${listItem.ID} - Task Title `;
@@ -509,10 +510,16 @@ const createMainPageListingForm = (listItem) => {
     });
 
     formDisplayDueDate.addEventListener("click", function (e) {
+        // close the other form modal if it is open -> ideally, this would be redev'd to use a single shared modal to avoid having to close any.  Or perhaps a shared class to close all.
+        listFormModalObject.closeModalForm();
+        
         taskFormModalObject.updateInputValues(listItem);
         taskFormModalObject.showForm(listItem);
       });
     pencilImgButton.addEventListener("click", function (e) {
+        // close the other form modal if it is open -> ideally, this would be redev'd to use a single shared modal to avoid having to close any.  Or perhaps a shared class to close all.
+        listFormModalObject.closeModalForm();
+
     taskFormModalObject.updateInputValues(listItem);
     taskFormModalObject.showForm();
     });
@@ -669,6 +676,8 @@ const initialEventListeners = () => {
         // remove all empty DB entries so the next availableID is correct
         
         deleteUncommittedEntries();
+        // close other form modal.  Should redev modals to avoid having to do this.
+        taskFormModalObject.closeModalForm(`external`);
      
         const newListItem = listItemObject.newListItem(
             NaN, 
